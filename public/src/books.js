@@ -7,19 +7,19 @@ function findBookById(books, id) {
 }
 
 function partitionBooksByBorrowedStatus(books) {
-checkedOut = [];
-checkedIn = [];
-books.forEach((book) => {
-  let lastBorrow = book.borrows[0];
-  lastBorrow.returned ? checkedIn.push(book) : checkedOut.push(book);
-})
-const currentBookStatus = [checkedOut, checkedIn];
-return currentBookStatus;
-}
+  checkedOut = [];
+  checkedIn = [];
+  //added .map function
+  books.map((book) => {
+    let lastBorrow = book.borrows[0];
+    lastBorrow.returned ? checkedIn.push(book) : checkedOut.push(book);
+  })
+  const currentBookStatus = [checkedOut, checkedIn];
+  return currentBookStatus;
+  }
 
 function getBorrowersForBook({borrows}, accounts) {
   const fullBorrowHist = [];
-  let currentAccount = {};
   borrows.forEach((borrow) => {
     accounts.forEach(({id, ...rest}) => {
       let adjustedAccount = {};

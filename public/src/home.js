@@ -16,7 +16,7 @@ function getBooksBorrowedCount(books) {
 
 function getMostCommonGenres(books) {
   const topGenres = [];
-  books.forEach(({genre}) => {
+  books.map(({genre}) => {
     if (topGenres.some((type) => type.name === genre)) {
       topGenres.forEach((type) => {
         if (type.name === genre) type.count ++;
@@ -31,26 +31,28 @@ function getMostCommonGenres(books) {
 }
 
 function getMostPopularBooks(books) {
-const topBooks = [];
-books.forEach(({title, borrows}) => {
-  topBooks.push({name: title, count: borrows.length});
-  topBooks.sort((book1, book2) => book2.count - book1.count);
-  if (topBooks.length > 5) topBooks.pop();
-  })
+  const topBooks = [];
+  books.forEach(({title, borrows}) => {
+    topBooks.push({name: title, count: borrows.length});
+    topBooks.sort((book1, book2) => book2.count - book1.count);
+    if (topBooks.length > 5) topBooks.pop();
+    })
   return topBooks;
 }
 
 function getMostPopularAuthors(books, authors) {
   const topAuthors = [];
+  //Added Helper Function
+  const joinNames = (first, last) =>  `${first} ${last}`;
   authors.forEach(({id, name}) => {
     books.forEach((book) => {
       if (book.authorId === id) {
-        if (topAuthors.some((author) => author.name === `${name.first} ${name.last}`)) {
+        if (topAuthors.some((author) => author.name === joinNames(name.first, name.last))) {
           topAuthors.forEach((author) => {
-            if (`${name.first} ${name.last}` === author.name) author.count += book.borrows.length;
+            if (joinNames(name.first, name.last) === author.name) author.count += book.borrows.length;
           })
         } else {
-          topAuthors.push({name: `${name.first} ${name.last}`, count: book.borrows.length});
+          topAuthors.push({name: joinNames(name.first, name.last), count: book.borrows.length});
         } 
       }
     })
